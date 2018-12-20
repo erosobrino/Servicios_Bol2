@@ -9,12 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Ejer2
+namespace Ejer3
 {
-    //Validado
     public partial class Form1 : Form
     {
+        string directory = Environment.GetEnvironmentVariable("homedrive")+"\\"+Environment.GetEnvironmentVariable("homepath") + "\\configNotas.bin";
         bool modified = false;
+        int R, G, B;
         public Form1()
         {
             InitializeComponent();
@@ -56,8 +57,7 @@ namespace Ejer2
             {
                 OpenFileDialog openFile = new OpenFileDialog();
                 openFile.Title = "Select a file to open";
-                //saveFile.InitialDirectory = "C:\\";
-                openFile.InitialDirectory = "D:\\";
+                openFile.InitialDirectory = "C:\\";
                 openFile.Filter = "Text (*.txt)|*.txt|All files|*.*";
                 openFile.ValidateNames = true;
                 DialogResult res = openFile.ShowDialog();
@@ -87,8 +87,7 @@ namespace Ejer2
         {
             SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.Title = "Select path and name";
-            //saveFile.InitialDirectory = "C:\\";
-            saveFile.InitialDirectory = "D:\\";
+            saveFile.InitialDirectory = "C:\\";
             saveFile.Filter = "Text (*.txt)|*.txt|All files|*.*";
             saveFile.ValidateNames = true;
             DialogResult res = saveFile.ShowDialog();
@@ -114,6 +113,43 @@ namespace Ejer2
             if (res.Equals(DialogResult.Cancel))
             {
                 e.Cancel = true;
+            }
+        }
+
+        private void KeyDown1(object sender, KeyEventArgs e)
+        {
+            if (ModifierKeys.HasFlag(Keys.Control))
+            {
+                if (e.KeyCode == Keys.R)
+                {
+                    Form2 form2RGB = new Form2();
+                    DialogResult res = form2RGB.ShowDialog();
+                    if (res == DialogResult.OK)
+                    {
+                        Color color = Color.FromArgb(form2RGB.R, form2RGB.G, form2RGB.B);
+                        tbNote.ForeColor = color;
+                        using (BinaryWriter writer = new BinaryWriter(new FileStream(directory, FileMode.Create)))
+                        {
+                            writer.Write(form2RGB.R);
+                            writer.Write(form2RGB.G);
+                            writer.Write(form2RGB.B);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (File.Exists(directory)){
+                using (BinaryReader reader = new BinaryReader(File.Open(directory, FileMode.Open)))
+                {
+                    R = reader.ReadInt32();
+                    G = reader.ReadInt32();
+                    B = reader.ReadInt32();
+                }
+                Color color = Color.FromArgb(R, G, B);
+                tbNote.ForeColor = color;
             }
         }
     }

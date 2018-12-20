@@ -1,4 +1,4 @@
-﻿namespace Ejer2
+﻿namespace Ejer3
 {
     partial class Form1
     {
@@ -37,8 +37,7 @@
             // 
             // tbNote
             // 
-            this.tbNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbNote.Dock = System.Windows.Forms.DockStyle.Top;
             this.tbNote.Location = new System.Drawing.Point(0, 0);
             this.tbNote.Multiline = true;
             this.tbNote.Name = "tbNote";
@@ -46,11 +45,12 @@
             this.tbNote.Size = new System.Drawing.Size(800, 378);
             this.tbNote.TabIndex = 0;
             this.tbNote.TextChanged += new System.EventHandler(this.tbNota_TextChanged);
+            this.tbNote.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDown1);
             // 
             // btNew
             // 
             this.btNew.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btNew.Location = new System.Drawing.Point(118, 384);
+            this.btNew.Location = new System.Drawing.Point(130, 383);
             this.btNew.Name = "btNew";
             this.btNew.Size = new System.Drawing.Size(96, 54);
             this.btNew.TabIndex = 1;
@@ -61,7 +61,7 @@
             // btOpen
             // 
             this.btOpen.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btOpen.Location = new System.Drawing.Point(343, 384);
+            this.btOpen.Location = new System.Drawing.Point(355, 383);
             this.btOpen.Name = "btOpen";
             this.btOpen.Size = new System.Drawing.Size(96, 54);
             this.btOpen.TabIndex = 2;
@@ -72,7 +72,7 @@
             // btSave
             // 
             this.btSave.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btSave.Location = new System.Drawing.Point(560, 384);
+            this.btSave.Location = new System.Drawing.Point(572, 383);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(96, 54);
             this.btSave.TabIndex = 3;
@@ -84,15 +84,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 461);
             this.Controls.Add(this.btSave);
             this.Controls.Add(this.btOpen);
             this.Controls.Add(this.btNew);
             this.Controls.Add(this.tbNote);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Notepad";
+            this.Text = "Ejer3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDown1);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -106,4 +108,3 @@
         private System.Windows.Forms.Button btSave;
     }
 }
-

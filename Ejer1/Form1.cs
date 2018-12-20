@@ -13,6 +13,7 @@ namespace Ejer1
 {
     public partial class Form1 : Form
     {
+        //Validado
         //D:\
         DirectoryInfo d;
         public Form1()
@@ -69,6 +70,10 @@ namespace Ejer1
                     lblError.Text = "Invalid characters";
                 }
                 catch (Win32Exception)
+                {
+                    lblError.Text = "You are not allowed to see this directory";
+                }
+                catch (UnauthorizedAccessException)
                 {
                     lblError.Text = "You are not allowed to see this directory";
                 }
