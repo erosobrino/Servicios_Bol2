@@ -11,11 +11,13 @@ using System.Windows.Forms;
 
 namespace Ejer3
 {
+    //Validado
     public partial class Form1 : Form
     {
-        string directory = Environment.GetEnvironmentVariable("homedrive")+"\\"+Environment.GetEnvironmentVariable("homepath") + "\\configNotas.bin";
+        string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath") + "\\configNotas.bin";
         bool modified = false;
         int R, G, B;
+        string path;
         public Form1()
         {
             InitializeComponent();
@@ -73,6 +75,7 @@ namespace Ejer3
                         }
                         //tbNota.Text = reader.ReadToEnd();
                     }
+                    path = openFile.FileName;
                 }
                 modified = false;
             }
@@ -98,6 +101,7 @@ namespace Ejer3
                     writer.Write(tbNote.Text);
                 }
                 modified = false;
+                path = saveFile.FileName;
             }
             return res;
         }
@@ -114,6 +118,13 @@ namespace Ejer3
             {
                 e.Cancel = true;
             }
+            using (BinaryWriter writer = new BinaryWriter(new FileStream(directory, FileMode.Create)))
+            {
+                writer.Write(R);
+                writer.Write(G);
+                writer.Write(B);
+                writer.Write(path);
+            }
         }
 
         private void KeyDown1(object sender, KeyEventArgs e)
@@ -128,12 +139,9 @@ namespace Ejer3
                     {
                         Color color = Color.FromArgb(form2RGB.R, form2RGB.G, form2RGB.B);
                         tbNote.ForeColor = color;
-                        using (BinaryWriter writer = new BinaryWriter(new FileStream(directory, FileMode.Create)))
-                        {
-                            writer.Write(form2RGB.R);
-                            writer.Write(form2RGB.G);
-                            writer.Write(form2RGB.B);
-                        }
+                        R = form2RGB.R;
+                        G = form2RGB.G;
+                        B = form2RGB.B;
                     }
                 }
             }
@@ -141,15 +149,41 @@ namespace Ejer3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (File.Exists(directory)){
+            if (File.Exists(directory))
+            {
                 using (BinaryReader reader = new BinaryReader(File.Open(directory, FileMode.Open)))
                 {
-                    R = reader.ReadInt32();
-                    G = reader.ReadInt32();
-                    B = reader.ReadInt32();
+                    try
+                    {
+                        R = reader.ReadInt32();
+                        G = reader.ReadInt32();
+                        B = reader.ReadInt32();
+                        path = reader.ReadString();
+                    }
+                    catch//No genérico
+                    {
+
+                    }
                 }
                 Color color = Color.FromArgb(R, G, B);
                 tbNote.ForeColor = color;
+                if (path != null)
+                {
+                    FileInfo file = new FileInfo(path);
+                    if (file.Exists)
+                    {
+                        using (StreamReader reader = new StreamReader(path))
+                        {
+                            String line = reader.ReadLine();
+                            while (line != null)
+                            {
+                                tbNote.AppendText(line);
+                                line = reader.ReadLine();
+                            }
+                        }
+                        modified = false;
+                    }
+                }
             }
         }
     }
