@@ -103,6 +103,32 @@ namespace Ejer4
             } while (eleccion != 8);
         }
 
+        private void guardar(List<Juego> juegos)
+        {
+            string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath");
+            BinWriterJuego bwj = new BinWriterJuego(new FileStream(directory + "\\games.dat", FileMode.OpenOrCreate));
+            foreach (Juego j in juegos)
+            {
+                bwj.Write(j);
+            }
+            bwj.Dispose();
+
+        }
+
+        private List<Juego> leer()
+        {
+            List<Juego> juegos = new List<Juego>();
+            string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath");
+            BinReaderJuego brj;
+            try
+            {
+                brj = new BinReaderJuego(new FileStream(directory + "\\games.dat", FileMode.Open));
+                juegos = brj.ReadVideojuego();
+                brj.Dispose();
+            }
+            catch (FileNotFoundException) { }
+            return juegos;
+        }
 
         public List<Juego> introducirJuego(List<Juego> Juegos, bool introducir, int pos)
         {
@@ -319,33 +345,6 @@ namespace Ejer4
                 Console.WriteLine("El valor es demasiado alto");
             }
             return eleccion;
-        }
-
-        private void guardar(List<Juego> juegos)
-        {
-            string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath");
-            BinWriterJuego bwj = new BinWriterJuego(new FileStream(directory + "\\games.dat", FileMode.OpenOrCreate));
-            foreach (Juego j in juegos)
-            {
-                bwj.Write(j);
-            }
-            bwj.Dispose();
-
-        }
-
-        private List<Juego> leer()
-        {
-            List<Juego> juegos = new List<Juego>();
-            string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath");
-            BinReaderJuego brj;
-            try
-            {
-                brj = new BinReaderJuego(new FileStream(directory + "\\games.dat", FileMode.Open));
-                juegos = brj.ReadVideojuego();
-                brj.Dispose();
-            }
-            catch (FileNotFoundException) { }
-            return juegos;
         }
     }
 }
