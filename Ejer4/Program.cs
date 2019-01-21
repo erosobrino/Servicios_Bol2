@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ejer4
 {
+    //Validado
     class BinWriterJuego : BinaryWriter
     {
         public BinWriterJuego(Stream str) : base(str)
