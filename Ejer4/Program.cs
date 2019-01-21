@@ -58,7 +58,7 @@ namespace Ejer4
             Ejer4 ejer = new Ejer4();
             int eleccion = -1;
             List<Juego> Juegos = new List<Juego>();
-            Juegos = ejer.leer();
+            Juegos = ejer.Leer();
             do
             {
                 Console.WriteLine("1.Insertar juego");
@@ -106,25 +106,32 @@ namespace Ejer4
         private void guardar(List<Juego> juegos)
         {
             string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath");
-            BinWriterJuego bwj = new BinWriterJuego(new FileStream(directory + "\\games.dat", FileMode.OpenOrCreate));
-            foreach (Juego j in juegos)
+            try
             {
-                bwj.Write(j);
+                using (BinWriterJuego bwj = new BinWriterJuego(new FileStream(directory + "\\games.dat", FileMode.OpenOrCreate)))
+                {
+                    foreach (Juego j in juegos)
+                    {
+                        bwj.Write(j);
+                    }
+                    bwj.Dispose();
+                }
             }
-            bwj.Dispose();
-
+            catch { }
         }
 
-        private List<Juego> leer()
+        private List<Juego> Leer()
         {
             List<Juego> juegos = new List<Juego>();
             string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath");
             BinReaderJuego brj;
             try
             {
-                brj = new BinReaderJuego(new FileStream(directory + "\\games.dat", FileMode.Open));
-                juegos = brj.ReadVideojuego();
-                brj.Dispose();
+                using (brj = new BinReaderJuego(new FileStream(directory + "\\games.dat", FileMode.Open)))
+                {
+                    juegos = brj.ReadVideojuego();
+                    brj.Dispose();
+                }
             }
             catch (FileNotFoundException) { }
             return juegos;
