@@ -14,7 +14,9 @@ namespace Ejer5
 {
     public partial class Form1 : Form
     {
+        string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath") + "\\extensionesEjer5.txt";
         Thread thread;
+        string[] extensiones;
         delegate void DelegateText(string text, TextBox t);
         public Form1()
         {
@@ -23,10 +25,12 @@ namespace Ejer5
             tbWord.Text = "a";
         }
 
-        List<string> textFiles = new List<string>();
+        List<string> textFiles;
 
         private void btFind_Click(object sender, EventArgs e)
         {
+            textFiles = new List<string>();
+            tbFind.Clear();
             lblError.Text = "";
             if (tbPath.Text.Length > 0 && tbWord.Text.Length > 0)
             {
@@ -34,17 +38,20 @@ namespace Ejer5
                 try
                 {
                     directory = new DirectoryInfo(tbPath.Text);
+                    for (int i = 0; i < directory.GetFiles().Length; i++)
+                    {
+                        for (int j = 0; j < extensiones.Length; j++)
+                        {
+                            if (directory.GetFiles()[i].Extension == extensiones[j])
+                            {
+                                textFiles.Add(directory.GetFiles()[i].FullName);
+                            }
+                        }
+                    }
                 }
                 catch (ArgumentException)
                 {
                     lblError.Text = "The directory is invalid";
-                }
-                for (int i = 0; i < directory.GetFiles().Length; i++)
-                {
-                    if (directory.GetFiles()[i].Extension.Equals(".txt"))
-                    {
-                        textFiles.Add(directory.GetFiles()[i].FullName);
-                    }
                 }
                 foreach (string str in textFiles)
                 {
@@ -66,28 +73,69 @@ namespace Ejer5
         private void ThreadFind(string path, string word, bool capital)
         {
             int number = 0;
-            //try
-            //{
-            Console.WriteLine(path);
-            using (StreamReader reader = new StreamReader(path))
+            try
             {
-                String line = reader.ReadLine();
-                while (line != null)
+                Console.WriteLine(path);
+                using (StreamReader reader = new StreamReader(path))
                 {
-                    //long b = "hola como estas".LongCount(letra => letra.ToString() == "a");
-                    //number = (int)line.LongCount(worddd => worddd.ToString() == word);
-                    ////if (line.Contains(word))
-                    ////{
-                    ////    number++;
-                    ////}
-                    DelegateText delegateText = new DelegateText(changeText);
-                    this.Invoke(delegateText, line, tbFind);
-                    line = reader.ReadLine();
+                    String line = reader.ReadLine();
+                    while (line != null)
+                    {
+                        if (chCapital.Checked)
+                        {
+                            if (line.Contains(word))
+                            {
+                                number++;
+                            }
+                        }
+                        else
+                        {
+                            if (line.ToUpper().Contains(word.ToUpper()))
+                            {
+                                number++;
+                            }
+                        }
+                        line = reader.ReadLine();
+                    }
+                }
+                DelegateText delegateText = new DelegateText(changeText);
+                FileInfo file = new FileInfo(path);
+                this.Invoke(delegateText, String.Format("{0,20} {1,20}", file.Name, number), tbFind);
+            }
+            catch { }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string text = "";
+            try
+            {
+                using (StreamReader reader = new StreamReader(directory))
+                {
+                    text = reader.ReadToEnd().Trim();
+                    if (text.Length > 0)
+                    {
+                        extensiones = text.Trim().Split(';');
+                    }
+                }
+                tbExtensions.Text = text;
+            }
+            catch
+            {
+                extensiones = new string[] { ".txt" };
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(directory))
+                {
+                    writer.Write(tbExtensions.Text);
                 }
             }
-            //}
-            //catch { }
+            catch { }
         }
     }
 }
-//string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath") + "\\configNotas.bin";

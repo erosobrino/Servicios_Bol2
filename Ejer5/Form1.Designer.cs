@@ -37,6 +37,8 @@
             this.chCapital = new System.Windows.Forms.CheckBox();
             this.btFind = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
+            this.tbExtensions = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tbPath
@@ -55,10 +57,13 @@
             // 
             // tbFind
             // 
-            this.tbFind.Location = new System.Drawing.Point(12, 130);
+            this.tbFind.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tbFind.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbFind.Location = new System.Drawing.Point(0, 142);
             this.tbFind.Multiline = true;
             this.tbFind.Name = "tbFind";
-            this.tbFind.Size = new System.Drawing.Size(651, 308);
+            this.tbFind.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbFind.Size = new System.Drawing.Size(675, 308);
             this.tbFind.TabIndex = 2;
             // 
             // label1
@@ -103,10 +108,26 @@
             // 
             this.lblError.AutoSize = true;
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(245, 94);
+            this.lblError.Location = new System.Drawing.Point(240, 82);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(0, 17);
             this.lblError.TabIndex = 7;
+            // 
+            // tbExtensions
+            // 
+            this.tbExtensions.Location = new System.Drawing.Point(317, 102);
+            this.tbExtensions.Name = "tbExtensions";
+            this.tbExtensions.Size = new System.Drawing.Size(341, 22);
+            this.tbExtensions.TabIndex = 8;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(240, 105);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 17);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Extensions";
             // 
             // Form1
             // 
@@ -114,6 +135,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(675, 450);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.tbExtensions);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.btFind);
             this.Controls.Add(this.chCapital);
@@ -125,6 +148,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Word Finder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,6 +165,8 @@
         private System.Windows.Forms.Label lblError;
         public System.Windows.Forms.TextBox tbFind;
         public System.Windows.Forms.CheckBox chCapital;
+        private System.Windows.Forms.TextBox tbExtensions;
+        private System.Windows.Forms.Label label3;
     }
 }
 
