@@ -45,14 +45,14 @@
             // 
             this.tbPath.Location = new System.Drawing.Point(108, 12);
             this.tbPath.Name = "tbPath";
-            this.tbPath.Size = new System.Drawing.Size(555, 22);
+            this.tbPath.Size = new System.Drawing.Size(610, 22);
             this.tbPath.TabIndex = 0;
             // 
             // tbWord
             // 
             this.tbWord.Location = new System.Drawing.Point(108, 47);
             this.tbWord.Name = "tbWord";
-            this.tbWord.Size = new System.Drawing.Size(555, 22);
+            this.tbWord.Size = new System.Drawing.Size(610, 22);
             this.tbWord.TabIndex = 1;
             // 
             // tbFind
@@ -63,7 +63,7 @@
             this.tbFind.Multiline = true;
             this.tbFind.Name = "tbFind";
             this.tbFind.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbFind.Size = new System.Drawing.Size(675, 308);
+            this.tbFind.Size = new System.Drawing.Size(730, 308);
             this.tbFind.TabIndex = 2;
             // 
             // label1
@@ -117,7 +117,7 @@
             // 
             this.tbExtensions.Location = new System.Drawing.Point(317, 102);
             this.tbExtensions.Name = "tbExtensions";
-            this.tbExtensions.Size = new System.Drawing.Size(341, 22);
+            this.tbExtensions.Size = new System.Drawing.Size(401, 22);
             this.tbExtensions.TabIndex = 8;
             // 
             // label3
@@ -134,7 +134,7 @@
             this.AcceptButton = this.btFind;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(675, 450);
+            this.ClientSize = new System.Drawing.Size(730, 450);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tbExtensions);
             this.Controls.Add(this.lblError);

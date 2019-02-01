@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,6 +18,7 @@ namespace Ejer5
         string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath") + "\\extensionesEjer5.txt";
         Thread thread;
         string[] extensiones;
+        private static readonly object l = new object();
         delegate void DelegateText(string text, TextBox t);
         public Form1()
         {
@@ -53,10 +55,27 @@ namespace Ejer5
                 {
                     lblError.Text = "The directory is invalid";
                 }
+                catch (DirectoryNotFoundException)
+                {
+                    lblError.Text = "The path is not valid";
+                }
+                catch (IOException)
+                {
+                    lblError.Text = "Error in the path";
+                }
+                catch (Win32Exception)
+                {
+                    lblError.Text = "You are not allowed to see this directory";
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    lblError.Text = "You are not allowed to see this directory";
+                }
                 foreach (string str in textFiles)
                 {
                     thread = new Thread(() => ThreadFind(str, tbWord.Text, chCapital.Checked));
                     thread.Start();
+                    thread.IsBackground = true;
                 }
             }
             else
@@ -83,24 +102,19 @@ namespace Ejer5
                     {
                         if (chCapital.Checked)
                         {
-                            if (line.Contains(word))
-                            {
-                                number++;
-                            }
+                            number += line.Replace(word, "|").Split('|').Length-1;
                         }
                         else
                         {
-                            if (line.ToUpper().Contains(word.ToUpper()))
-                            {
-                                number++;
-                            }
+                            number += line.ToUpper().Replace(word.ToUpper(), "|").Split('|').Length-1;
                         }
                         line = reader.ReadLine();
                     }
                 }
                 DelegateText delegateText = new DelegateText(changeText);
                 FileInfo file = new FileInfo(path);
-                this.Invoke(delegateText, String.Format("{0,20} {1,20}", file.Name, number), tbFind);
+                lock (l)
+                    this.Invoke(delegateText, String.Format("{0,30} {1,15}", file.Name, number), tbFind);
             }
             catch { }
         }
@@ -123,6 +137,7 @@ namespace Ejer5
             catch
             {
                 extensiones = new string[] { ".txt" };
+                tbExtensions.Text = ".txt";
             }
         }
 
