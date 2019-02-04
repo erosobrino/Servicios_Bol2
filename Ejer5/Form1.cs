@@ -13,6 +13,7 @@ using System.Windows.Forms;
 
 namespace Ejer5
 {
+    //Validado
     public partial class Form1 : Form
     {
         string directory = Environment.GetEnvironmentVariable("homedrive") + "\\" + Environment.GetEnvironmentVariable("homepath") + "\\extensionesEjer5.txt";
